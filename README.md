@@ -1,7 +1,7 @@
 # splunk-notes
 Splunk notes.
 
-## Parse access logs
+## Parse Tomcat Access Logs
 
 ```
 {{{"some search" sourcetype="LogFiles.access_combined_wcookie" | rex field=_raw "] \"(?<httpMethod>[^\s]+) (?<urlPath>[^\s]+) (?<httpVersion>[^\s]+)\" (?<httpStatus>[^\s]+) (?<respBytes>[^\s]*) (?<respTimeMillis>[^\s]*) \"(?<userAgent>.*)\" \"(?<referrerUrl>.*)\""}}}
