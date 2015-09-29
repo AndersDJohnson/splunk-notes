@@ -9,25 +9,25 @@ Splunk notes.
 
 ## Filters
 
-Regex:
+### Regex
 
 ```
 "some search" | regex someFieldName = ".*SOME.*REGEX.*"
 ```
 
-Negative regex:
+### Regex (negative)
 
 ```
 "some search" | regex someFieldName != ".*SOME.*REGEX.*"
 ```
 
-Where:
+### Where
 
 ```
 "some search" | where someFieldName = "someValue"
 ```
 
-Negative where:
+### Where(negative)
 
 ```
 "some search" | where someFieldName != "someValue"
@@ -39,13 +39,15 @@ Negative where:
 "some search" sourcetype="LogFiles.access_combined_wcookie" | rex field=_raw "] \"(?<httpMethod>[^\s]+) (?<urlPath>[^\s]+) (?<httpVersion>[^\s]+)\" (?<httpStatus>[^\s]+) (?<respBytes>[^\s]*) (?<respTimeMillis>[^\s]*) \"(?<userAgent>.*)\" \"(?<referrerUrl>.*)\"" | rex field=urlPath "(?<nonQuery>[^\?]*).*" | eval urls=referrerUrl + " -> " + nonQuery | chart count by userAgent, urls
 ```
 
-## Multi-line queries ("transactions")
+## Multi-line
+"transactions"
 
 ```
 "" | transaction startswith="Request:" endswith=("Unable to add to cart") maxevents=4
 ```
 
-## Correlation search (different event occurrences compared on graph)
+## Correlation
+Different event occurrences compared on graph.
 
 ```
 
@@ -61,7 +63,7 @@ host=owbswcpcs* sourcetype="LogFiles.tomcat-wrapper" | rex field=_raw "\s*(?<lev
 
 ```
 
-## Filtering out timestamps and low-level JVM (GC, classloader) from messages
+## Filter out timestamps and low-level JVM (GC, classloader) from messages
 
 ```
 
