@@ -51,7 +51,7 @@ Different event occurrences compared on graph.
 
 ```
 
-host=owbsw2kpwrd0* sourcetype="LogFiles.tomcat-wrapper" "Launching a JVM" | eval event="jvm" | stats count by event, _time | eval occurred=if (count > 0, 1, 0) | append [search host=owbsw2kpwrd0* sourcetype="LogFiles.tomcat-wrapper" "permgen" | eval event="permgen" | stats  count by event, _time  | eval occurred=if (count > 0, 1, 0) ] | search event="jvm"
+host=myhost* sourcetype="LogFiles.tomcat-wrapper" "Launching a JVM" | eval event="jvm" | stats count by event, _time | eval occurred=if (count > 0, 1, 0) | append [search host=myhost* sourcetype="LogFiles.tomcat-wrapper" "permgen" | eval event="permgen" | stats  count by event, _time  | eval occurred=if (count > 0, 1, 0) ] | search event="jvm"
 
 ```
 
@@ -59,7 +59,7 @@ host=owbsw2kpwrd0* sourcetype="LogFiles.tomcat-wrapper" "Launching a JVM" | eval
 
 ```
 
-host=owbswcpcs* sourcetype="LogFiles.tomcat-wrapper" | rex field=_raw "\s*(?<level>[^\s]+).*?\|.*?\|.*?\|(?<msg>.{0,80})" | regex msg!="\s+at" | regex msg!=".*\d+ more" | eval hostMsg=host+msg | chart count by hostMsg | sort by count desc
+host=myhost* sourcetype="LogFiles.tomcat-wrapper" | rex field=_raw "\s*(?<level>[^\s]+).*?\|.*?\|.*?\|(?<msg>.{0,80})" | regex msg!="\s+at" | regex msg!=".*\d+ more" | eval hostMsg=host+msg | chart count by hostMsg | sort by count desc
 
 ```
 
@@ -67,7 +67,7 @@ host=owbswcpcs* sourcetype="LogFiles.tomcat-wrapper" | rex field=_raw "\s*(?<lev
 
 ```
 
-host=owbswjpes* source="E:\\LogFiles\\user-services\\tomcat-wrapper.log" | rex field=_raw "\s*(?<level>[^\s]+).*?\|.*?\|.*?\|(\s*.*?\s\d+.*?(AM|PM))?(?<msg>.{0,80})" | regex msg!="(\[GC)|(Full GC\[)|(PSYoungGen)|(Unloading class)" | timechart limit=0 count by msg span=30min | sort by count desc
+host=myhost* source="E:\\LogFiles\\user-services\\tomcat-wrapper.log" | rex field=_raw "\s*(?<level>[^\s]+).*?\|.*?\|.*?\|(\s*.*?\s\d+.*?(AM|PM))?(?<msg>.{0,80})" | regex msg!="(\[GC)|(Full GC\[)|(PSYoungGen)|(Unloading class)" | timechart limit=0 count by msg span=30min | sort by count desc
 
 ```
 
@@ -75,6 +75,6 @@ host=owbswjpes* source="E:\\LogFiles\\user-services\\tomcat-wrapper.log" | rex f
 
 ```
 
-"/services/user/V2.0/service/GetUser* " host="owbswjpes0*" sourcetype="LogFiles.access_combined_wcookie" | rex field=_raw "\" [^\s]+ (?<respBytes_>[^\s]+) (?<respTimeMillis_>[^\s]+) " | timechart eval(avg(respTimeMillis_) + stdevp(respTimeMillis_)) AS AvgPlusSDRespTime by host
+"/my/url/* " host="myhost*" sourcetype="LogFiles.access_combined_wcookie" | rex field=_raw "\" [^\s]+ (?<respBytes_>[^\s]+) (?<respTimeMillis_>[^\s]+) " | timechart eval(avg(respTimeMillis_) + stdevp(respTimeMillis_)) AS AvgPlusSDRespTime by host
 
 ```
